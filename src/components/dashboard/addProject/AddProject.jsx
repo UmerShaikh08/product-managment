@@ -17,7 +17,7 @@ const AddProject = () => {
   };
 
   return (
-    <div className=" w-full h-full space-y-4 md:space-y-20 mb-[100px]">
+    <div className=" w-full h-full space-y-4  mb-[100px]">
       <div className="relative w-full h-full">
         <img src={bgImg} className="w-full h-full" />
         <h3 className="absolute top-1 left-2 md:top-[20%] md:left-[2%] text-xl md:-2xl font-semibold text-white">
@@ -34,10 +34,10 @@ const AddProject = () => {
         </div>
       </div>
 
-      {/* creation box */}
+      {/* project creation box */}
       <form
         onSubmit={handleSubmit(submitData)}
-        className="bg-white flex flex-col gap-5 md:flex-row justify-between rounded-md w-[90%] md:w-[98%] mx-auto p-3"
+        className="bg-white flex flex-col gap-5 md:flex-row justify-between rounded-md w-[90%]  md:w-[98%] mx-auto p-3"
       >
         <div className="grid grid-cols-3 gap-10 w-full md:w-[80%]">
           <div className=" relative col-span-3 md:col-span-2 ">
@@ -81,7 +81,7 @@ const AddProject = () => {
 
         <button
           type="submit"
-          className="bg-[#025AAB] text-[#E3ECF5]  rounded-full py-2  px-8  h-fit w-fit transition-all duration-200 hover:scale-95"
+          className="bg-[#025AAB] text-[#E3ECF5]  rounded-full py-2  px-8  h-fit  transition-all duration-200 hover:scale-95"
         >
           {" "}
           Save Project
