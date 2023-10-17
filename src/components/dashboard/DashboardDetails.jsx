@@ -3,7 +3,7 @@ import bgImg from "../../assets/Header-bg.svg";
 import logo from "../../assets/Logo.svg";
 import ProjectDataCard from "./dashboardDetails/ProjectDataCard";
 import ProductChart from "./dashboardDetails/ProductChart";
-import logout from "../../assets/Logout.svg";
+
 import { MdLogout } from "react-icons/md";
 import { Swiper, SwiperSlide } from "swiper/react";
 import {
@@ -17,6 +17,9 @@ import {
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/free-mode";
+import { useNavigate } from "react-router-dom";
+import { logout } from "../../services/operations/auth";
+import { useDispatch } from "react-redux";
 
 const DashboardDetails = () => {
   const dashboardCounters = [
@@ -85,9 +88,13 @@ const DashboardDetails = () => {
       count: 8,
     },
   ];
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   return (
     <>
-      <div className=" w-full h-full space-y-20 mb-[110px]">
+      <div className=" w-[98%] h-full space-y-20 mb-[100px] lg:mb-[10px]">
         <div className="relative w-full h-full">
           <img src={bgImg} className="w-full h-full" />
           <h3 className="absolute top-1 left-2 md:top-[20%] md:left-[2%] text-xl md:-2xl font-semibold text-white">
@@ -99,7 +106,10 @@ const DashboardDetails = () => {
             className="absolute hidden md:block top-[20%] left-[50%] w-[5%]"
           />
 
-          <div className="md:hidden absolute   top-1 right-6 w-[5%]">
+          <div
+            className="md:hidden absolute   top-1 right-6 w-[5%]"
+            onClick={() => dispatch(logout(navigate))}
+          >
             <MdLogout size={25} className="text-white" />
           </div>
 
@@ -120,19 +130,10 @@ const DashboardDetails = () => {
                 640: { slidesPerView: 3 },
                 1024: { slidesPerView: 4.9 },
               }}
-              modules={[Navigation, Pagination, Mousewheel, Keyboard, Autoplay]}
-              // loop={true}
+              modules={[Mousewheel, Keyboard]}
               spaceBetween={20}
-              pagination={false}
               freeMode={true}
-              rewind={false}
-              centeredSlides={false}
-              navigation={false}
               className="mySwiper mb-4"
-              autoplay={{
-                delay: 2000,
-                disableOnInteraction: false,
-              }}
               style={{
                 "--swiper-navigation-size": "20px",
               }}

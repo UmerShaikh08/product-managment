@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { userRoutes } from "./routes/userRoutes.js";
+import { projectRoutes } from "./routes/projectRoutes.js";
 
 dotenv.config({ path: ".env" });
 
@@ -23,6 +24,7 @@ app.use(
 );
 
 app.use("/api/vi/", userRoutes);
+app.use("/api/vi/", projectRoutes);
 
 app.get("/", (req, res) => {
   res.json({

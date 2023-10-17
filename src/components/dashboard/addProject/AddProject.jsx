@@ -4,16 +4,56 @@ import logo from "../../../assets/Logo.svg";
 import { MdLogout } from "react-icons/md";
 import { useForm } from "react-hook-form";
 import SelectionBox from "./SelectionBox";
+import { useNavigate } from "react-router-dom";
+import { logout } from "../../../services/operations/auth";
+import { useDispatch, useSelector } from "react-redux";
+import Datepicker from "./DatePicker";
+import { createProject } from "../../../services/operations/project";
+import toast from "react-hot-toast";
+import { addProject } from "../../../redux/slices/projectSlice";
+import { selectBox } from "../../../utils/SelectBoxData";
 
 const AddProject = () => {
   const {
     register,
     handleSubmit,
+    setValue,
+    reset,
     formState: { errors },
   } = useForm();
+  const { token } = useSelector((store) => store.auth);
 
-  const submitData = (data) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const submitData = async (data) => {
+    const end = "End";
+    const start = "start";
+
+    console.log(data.End);
+    if (
+      data.End === undefined ||
+      data.End === null ||
+      data.Start === undefined ||
+      data.Start === null
+    ) {
+      toast.error("Enter valide project date");
+      return;
+    }
+
+    if (data.Start > data.End) {
+      toast.error("Enter Valid Project Date");
+      return;
+    }
     console.log(data);
+    data.Status = "Registered";
+    const result = await createProject(data, token);
+
+    if (result) {
+      console.log(result);
+      dispatch(addProject(result?.data?.project));
+      reset();
+    }
   };
 
   return (
@@ -29,7 +69,10 @@ const AddProject = () => {
           className="absolute hidden md:block top-[20%] left-[50%] w-[5%]"
         />
 
-        <div className="md:hidden absolute   top-1 right-6 w-[5%]">
+        <div
+          className="md:hidden absolute   top-1 right-6 w-[5%]"
+          onClick={() => dispatch(logout(navigate))}
+        >
           <MdLogout size={25} className="text-white" />
         </div>
       </div>
@@ -43,14 +86,14 @@ const AddProject = () => {
           <div className=" relative col-span-3 md:col-span-2 ">
             <input
               type="text"
-              id="projectName"
+              id="ProjectName"
               placeholder="Enter Project Name"
               className={`h-16 rounded-md border  outline-none pl-3   w-full ${
-                errors.projectName ? "border-[#FF4949]" : "border-[#979797]"
+                errors.ProjectName ? "border-[#FF4949]" : "border-[#979797]"
               }`}
-              {...register("projectName", { required: true })}
+              {...register("ProjectName", { required: true })}
             />
-            {errors.projectName && (
+            {errors.ProjectName && (
               <span className=" absolute bottom-[-35%] left-0 text-[16px] text-[#FF4949]">
                 Project is required
               </span>
@@ -58,19 +101,62 @@ const AddProject = () => {
           </div>
           <div className=" hidden md:block col-span-1">&nbsp;</div>
 
-          <SelectionBox register={register} name={"Reason"} errors={errors} />
-          <SelectionBox register={register} name={"Type"} errors={errors} />
-          <SelectionBox register={register} name={"Division"} errors={errors} />
-          <SelectionBox register={register} name={"Category"} errors={errors} />
-          <SelectionBox register={register} name={"Piority"} errors={errors} />
           <SelectionBox
             register={register}
-            name={"Department"}
+            options={selectBox.Reason}
+            name={"Reason"}
             errors={errors}
           />
-          <SelectionBox register={register} name={"Start"} errors={errors} />
-          <SelectionBox register={register} name={"End"} errors={errors} />
-          <SelectionBox register={register} name={"Location"} errors={errors} />
+          <SelectionBox
+            register={register}
+            options={selectBox.Type}
+            name={"Type"}
+            errors={errors}
+          />
+          <SelectionBox
+            register={register}
+            options={selectBox.Division}
+            name={"Division"}
+            errors={errors}
+          />
+          <SelectionBox
+            register={register}
+            options={selectBox.Category}
+            name={"Category"}
+            errors={errors}
+          />
+          <SelectionBox
+            register={register}
+            options={selectBox.Priority}
+            name={"Priority"}
+            errors={errors}
+          />
+          <SelectionBox
+            register={register}
+            options={selectBox.Dept}
+            name={"Dept"}
+            errors={errors}
+          />
+
+          <Datepicker
+            register={register}
+            name={"Start"}
+            errors={errors}
+            setValue={setValue}
+          />
+          <Datepicker
+            register={register}
+            name={"End"}
+            errors={errors}
+            setValue={setValue}
+          />
+
+          <SelectionBox
+            register={register}
+            options={selectBox.Location}
+            name={"Location"}
+            errors={errors}
+          />
 
           <h3 className="text-[#767676] col-span-3 md:text-end">
             Status:{" "}

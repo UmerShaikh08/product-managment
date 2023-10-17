@@ -6,6 +6,9 @@ import ProjectRow from "./ProjectRow";
 import { HiOutlineSearch } from "react-icons/hi";
 import { projectList } from "../../../utils/data";
 import { TbMathGreater, TbMathLower } from "react-icons/tb";
+import { logout } from "../../../services/operations/auth";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const ProjectList = () => {
   const [allData, setAllData] = useState(null);
@@ -16,6 +19,8 @@ const ProjectList = () => {
   const [currentPage, setCurrenPage] = useState(1);
   const [start, setStart] = useState(0);
   const [end, setEnd] = useState(0);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const recordPerPage = 6;
   // const lastIdx = recordPerPage * currentPage;
@@ -131,7 +136,10 @@ const ProjectList = () => {
           className="absolute hidden md:block top-[20%] left-[50%] w-[5%]"
         />
 
-        <div className="md:hidden absolute   top-1 right-6 w-[5%]">
+        <div
+          className="md:hidden absolute   top-1 right-6 w-[5%]"
+          onClick={() => dispatch(logout(navigate))}
+        >
           <MdLogout size={25} className="text-white" />
         </div>
       </div>
@@ -184,7 +192,8 @@ const ProjectList = () => {
                   ?.slice(start, end)
                   ?.map((data, idx) => <ProjectRow data={data} key={idx} />)}
             </div>
-            <div className=" lg:hidden grid grid-cols-4  w-[100%] mx-auto pl-2 gap-5  lg:space-y-3">
+
+            <div className=" lg:hidden grid grid-cols-4  w-[100%] mx-auto pl-2 gap-5  ">
               {currentData &&
                 currentData?.map((data, idx) => (
                   <ProjectRow data={data} key={idx} />
@@ -192,7 +201,7 @@ const ProjectList = () => {
             </div>
           </>
         </div>
-        <div className="hidden  md:flex flex-row justify-center items-center gap-4">
+        <div className="hidden  lg:flex flex-row justify-center items-center gap-4">
           <div onClick={prevPage}>
             <TbMathLower
               className={` ${

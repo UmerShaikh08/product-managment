@@ -46,7 +46,7 @@ const ProjectRow = ({ data }) => {
             </button>
           </div>
         </div>
-        <div className="w-full  border border-[#E3E3E3]"></div>
+        <div className=" hidden lg:block w-full  border border-[#E3E3E3]"></div>
       </>
 
       {/* mobile view */}

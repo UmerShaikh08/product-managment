@@ -1,8 +1,10 @@
 import React from "react";
-import Sidebar from "../components/sidebar/Sidebar";
+// import Sidebar from "../components/sidebar/Sidebar";
 import DashboardDetails from "../components/dashboard/DashboardDetails";
 import AddProject from "../components/dashboard/addProject/AddProject";
 import ProjectList from "../components/dashboard/ProjectList/ProjectList";
+import { Outlet } from "react-router-dom";
+import Sidebar from "../components/sidebar/Sidebar";
 
 const Dashboard = () => {
   return (
@@ -11,7 +13,8 @@ const Dashboard = () => {
       <div className="bg-[#F3F5F7] w-screen md:w-[calc(100vw-4vw)] h-full">
         {/* <DashboardDetails /> */}
         {/* <AddProject /> */}
-        <ProjectList />
+        {/* <ProjectList /> */}
+        <Outlet />
       </div>
     </div>
   );

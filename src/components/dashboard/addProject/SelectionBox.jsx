@@ -1,6 +1,6 @@
 import React from "react";
 
-const SelectionBox = ({ register, name, errors }) => {
+const SelectionBox = ({ register, name, errors, options }) => {
   return (
     <div className="relative col-span-3 md:col-span-1  flex flex-col w-full text-[#8B8B8B] ">
       <label htmlFor="category">{name}</label>
@@ -14,12 +14,11 @@ const SelectionBox = ({ register, name, errors }) => {
         {...register(name, { required: true })}
       >
         <option disabled value={""}>
-          Choose a Category
+          Choose a {name}
         </option>
-        <option value={name}>Choose a yoooooo</option>
-        <option>Choose a game</option>
-        <option>Choose a faurite</option>
-        <option>Choose a large</option>
+        {options?.map((option, idx) => (
+          <option key={idx}> {option}</option>
+        ))}
       </select>
       {errors?.[name] && (
         <span className=" absolute bottom-[-25%] left-1 text-[12px] text-[#FF4949]">
