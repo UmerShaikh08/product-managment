@@ -20,7 +20,7 @@ const Sidebar = () => {
   return (
     <>
       {/* deskstop view */}
-      <div className="bg-white hidden md:flex max-h-[calc(100-3px)] h-screen   flex-col justify-center items-center gap-5 ">
+      <div className="bg-white hidden md:flex max-h-[calc(100-3px)] h-screen min-w-[60px]   flex-col justify-center items-center gap-5 ">
         <div className="flex flex-col justify-center h-full items-center gap-8 ">
           <SideLinks
             active={"dashboardActive"}

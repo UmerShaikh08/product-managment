@@ -4,11 +4,13 @@ import logo from "../../../assets/Logo.svg";
 import { MdLogout } from "react-icons/md";
 import ProjectRow from "./ProjectRow";
 import { HiOutlineSearch } from "react-icons/hi";
-import { projectList } from "../../../utils/data";
+// import { projectList } from "../../../utils/data";
 import { TbMathGreater, TbMathLower } from "react-icons/tb";
 import { logout } from "../../../services/operations/auth";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProjectList } from "../../../services/operations/project";
+import Loader from "../../Loader";
 
 const ProjectList = () => {
   const [allData, setAllData] = useState(null);
@@ -18,16 +20,13 @@ const ProjectList = () => {
 
   const [currentPage, setCurrenPage] = useState(1);
   const [start, setStart] = useState(0);
-  const [end, setEnd] = useState(0);
+  const [end, setEnd] = useState(5);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { projectList } = useSelector((store) => store.project);
+  const { token } = useSelector((store) => store.auth);
 
   const recordPerPage = 6;
-  // const lastIdx = recordPerPage * currentPage;
-  // const firstIdx = lastIdx - recordPerPage;
-  // const records = projectList?.splice(firstIdx, lastIdx);
-  // const nPage = Math.ceil(projectList?.length - recordPerPage);
-  // const numbers = [...Array(nPage + 1).keys()].slice(1);
 
   const handlePagination = () => {
     if (projectList.length > recordPerPage) {
@@ -40,19 +39,10 @@ const ProjectList = () => {
     setCurrenPage(1);
   };
 
-  useEffect(() => {
-    if (projectList.length > recordPerPage) {
-      setEnd(recordPerPage);
-    } else {
-      setEnd(projectList?.length);
-    }
-  }, []);
-
-  useEffect(() => {
-    let arr = [];
+  const fetchBasisOnSort = () => {
     if (sortType !== "Priority") {
-      arr = (currentData ? [...currentData] : [...projectList])?.sort(
-        (a, b) => {
+      if (allData) {
+        const arr = [...allData]?.sort((a, b) => {
           const categoryA = a?.[sortType];
           const categoryB = b?.[sortType];
           if (categoryA?.toLowerCase() < categoryB?.toLowerCase()) {
@@ -62,27 +52,49 @@ const ProjectList = () => {
             return 1;
           }
           return 0;
-        }
-      );
+        });
+        setCurrentData(arr);
+      }
     } else {
-      arr = projectList.sort((a, b) => {
-        //   set value corresponding to priority and sort them
-        const priorityOrder = { High: 1, Mid: 2, Low: 3 };
-        return priorityOrder[a.Priority] - priorityOrder[b.Priority];
-      });
+      // for priority
+      console.log("alldata ", allData);
+      if (allData) {
+        const arr = [...allData].sort((a, b) => {
+          const priorityOrder = { High: 1, Mid: 2, Low: 3 };
+          return priorityOrder[a.Priority] - priorityOrder[b.Priority];
+        });
+        setCurrentData(arr);
+      }
     }
+  };
 
-    if (!allData) setAllData(projectList);
-    console.log(arr);
-    setCurrentData(arr);
+  useEffect(() => {
+    const fetchProjectListingData = async () => {
+      const result = await fetchProjectList(dispatch, token);
 
-    handlePagination();
+      // if (result) {
+      //   setAllData(result);
+      //   setCurrentData(result);
+      // }
+    };
+    fetchProjectListingData();
+  }, []);
+
+  useEffect(() => {
+    setAllData(projectList);
+    setCurrentData(projectList);
+  }, [projectList]);
+
+  useEffect(() => {
+    fetchBasisOnSort();
   }, [sortType]);
+
+  useEffect(() => {
+    handlePagination();
+  }, [currentData]);
 
   // search functionality
   useEffect(() => {
-    console.log("search ", searchKey);
-
     const debounce = setTimeout(() => {
       if (searchKey === "") {
         setSortType("Priority");
@@ -90,7 +102,6 @@ const ProjectList = () => {
           setCurrentData(allData);
         }
       } else {
-        console.log("filter search ", searchKey);
         const filteredData =
           allData &&
           allData?.filter((data) =>
@@ -116,14 +127,14 @@ const ProjectList = () => {
   };
 
   const nextPage = () => {
-    if (currentPage < currentData?.length / recordPerPage - 1) {
+    if (currentPage < currentData?.length / recordPerPage) {
       setCurrenPage(currentPage + 1);
       setStart(start + recordPerPage);
       setEnd(end + recordPerPage);
     }
   };
 
-  return (
+  return currentData ? (
     <div className="relative w-full h-full space-y-4  mb-[100px]">
       <div className="relative w-full h-full">
         <img src={bgImg} className="w-full h-full" />
@@ -160,7 +171,7 @@ const ProjectList = () => {
             className=""
             onChange={(e) => setSortType(e.target.value)}
           >
-            <option value="Pirority">Pirority</option>
+            <option value="Priority">Priority</option>
             <option value="Category">Category</option>
             <option value="Reason">Reason</option>
             <option value="Division">Division</option>
@@ -188,15 +199,30 @@ const ProjectList = () => {
           <>
             <div className="hidden lg:block   w-[100%] mx-auto    lg:space-y-3">
               {currentData &&
-                currentData
-                  ?.slice(start, end)
-                  ?.map((data, idx) => <ProjectRow data={data} key={idx} />)}
+                currentData?.length !== 0 &&
+                currentData?.slice(start, end)?.map((data, idx) => {
+                  return (
+                    <ProjectRow
+                      data={data}
+                      key={idx}
+                      setAllData={setAllData}
+                      setCurrentData={setCurrentData}
+                      idx={idx}
+                    />
+                  );
+                })}
             </div>
 
             <div className=" lg:hidden grid grid-cols-4  w-[100%] mx-auto pl-2 gap-5  ">
               {currentData &&
                 currentData?.map((data, idx) => (
-                  <ProjectRow data={data} key={idx} />
+                  <ProjectRow
+                    data={data}
+                    key={idx}
+                    setAllData={setAllData}
+                    setCurrentData={setCurrentData}
+                    idx={idx}
+                  />
                 ))}
             </div>
           </>
@@ -215,7 +241,7 @@ const ProjectList = () => {
           <div
             onClick={nextPage}
             className={`${
-              currentPage >= currentData?.length / recordPerPage - 1
+              currentPage >= currentData?.length / recordPerPage
                 ? "text-[#999999]"
                 : "tect-black"
             }`}
@@ -225,6 +251,8 @@ const ProjectList = () => {
         </div>
       </div>
     </div>
+  ) : (
+    <Loader />
   );
 };
 

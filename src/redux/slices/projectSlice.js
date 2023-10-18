@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { projectList } from "../../utils/data";
 
 const initialState = {
   projectList: [],
@@ -10,10 +9,16 @@ const authSlice = createSlice({
   initialState: initialState,
   reducers: {
     addProject(state, action) {
-      state.projectList.push(action.payload);
+      const idx = state.projectList.findIndex(
+        (data) => data._id === action.payload._id
+      );
+      state.projectList[idx] = action.payload;
+    },
+    setProjectList(state, action) {
+      state.projectList = action.payload;
     },
   },
 });
 
-export const { addProject } = authSlice.actions;
+export const { addProject, setProjectList } = authSlice.actions;
 export default authSlice.reducer;

@@ -1,6 +1,9 @@
 import React from "react";
+import { updateStatus } from "../../../services/operations/project";
+import { useDispatch, useSelector } from "react-redux";
+import { addProject } from "../../../redux/slices/projectSlice";
 
-const ProjectRow = ({ data }) => {
+const ProjectRow = ({ data, setCurrentData, setAllData, idx }) => {
   //   console.log("inside row ", data);
 
   const {
@@ -13,8 +16,43 @@ const ProjectRow = ({ data }) => {
     Dept,
     Location,
     Status,
+    _id,
+    Start,
+    End,
   } = data;
 
+  const changeDate = (date) => {
+    const inputDateStr = date;
+
+    // Create a JavaScript Date object from the input string
+    const inputDate = new Date(inputDateStr);
+
+    // Define options for formatting the date
+    const options = { year: "numeric", month: "short", day: "numeric" };
+
+    // Format the date to the desired format
+    const formattedDate = inputDate.toLocaleDateString("en-US", options);
+
+    return formattedDate;
+  };
+
+  const { token } = useSelector((store) => store.auth);
+  const { projectList } = useSelector((store) => store.project);
+  const dispatch = useDispatch();
+
+  const statusHanlder = async (Status) => {
+    const projectId = _id;
+    const result = await dispatch(
+      updateStatus({ projectId, Status }, token, projectList, dispatch)
+    );
+
+    if (result) {
+      // console.log(result);
+      // setAllData((prev) => [...prev, result]);
+      // setCurrentData((prev) => [...prev, result]);
+      dispatch(addProject(result));
+    }
+  };
   return (
     <>
       {/* deskstop view */}
@@ -23,7 +61,7 @@ const ProjectRow = ({ data }) => {
           <div className="col-span-2">
             <h2 className=" font-semibold">{ProjectName}</h2>
             <p className="text-sm text-[#999999] font-serif">
-              jun-21,2020 to jan-01,2021
+              {changeDate(Start)} to {changeDate(End)}
             </p>
           </div>
           <div className="col-span-1">{Reason}</div>
@@ -35,13 +73,22 @@ const ProjectRow = ({ data }) => {
           <div className="col-span-1">{Location}</div>
           <div className="col-span-1">{Status}</div>
           <div className="col-span-3 w-full space-x-2 flex flex-row items-center   justify-center">
-            <button className="text-white rounded-full h-fit border-[#1B6AB4] px-3  bg-[#025AAB]">
+            <button
+              className="text-white rounded-full h-fit border-[#1B6AB4] px-3  bg-[#025AAB] transition-all duration-200 hover:bg-[#0259abe2]"
+              onClick={() => statusHanlder("Start")}
+            >
               Start
             </button>
-            <button className="text-[#1B6AB4] border h-fit border-[#1B6AB4] rounded-full  px-3 ">
+            <button
+              className="text-[#1B6AB4] border h-fit border-[#1B6AB4] rounded-full  px-3 transition-all duration-200 hover:bg-[#0259abe2] hover:text-white"
+              onClick={() => statusHanlder("Close")}
+            >
               Close
             </button>
-            <button className="text-[#1B6AB4] border h-fit border-[#1B6AB4] rounded-full  px-3 ">
+            <button
+              className="text-[#1B6AB4] border h-fit border-[#1B6AB4] rounded-full  px-3 transition-all duration-200 hover:bg-[#0259abe2] hover:text-white"
+              onClick={() => statusHanlder("Cancel")}
+            >
               Cancel
             </button>
           </div>
@@ -57,10 +104,10 @@ const ProjectRow = ({ data }) => {
           <div className="">
             <h2 className=" font-semibold">{ProjectName}</h2>
             <p className="text-sm text-[#999999] font-serif">
-              jun-21,2020 to jan-01,2021
+              {Start} to {End}
             </p>
           </div>
-          <h3>Running</h3>
+          <h3>{Status}</h3>
         </div>
         {/* details */}
         <div className="text-sm space-y-1">
@@ -96,13 +143,22 @@ const ProjectRow = ({ data }) => {
 
         {/* status chaning option */}
         <div className=" w-full space-x-2  flex flex-row    justify-around">
-          <button className="text-white rounded-full h-fit border-[#1B6AB4] px-5 py-1  bg-[#025AAB]">
+          <button
+            className="text-white rounded-full h-fit border-[#1B6AB4] px-5 py-1  bg-[#025AAB]"
+            onClick={() => statusHanlder("Start")}
+          >
             Start
           </button>
-          <button className="text-[#1B6AB4] border h-fit border-[#1B6AB4] rounded-full  px-5 py-1 ">
+          <button
+            className="text-[#1B6AB4] border h-fit border-[#1B6AB4] rounded-full  px-5 py-1 "
+            onClick={() => statusHanlder("Close")}
+          >
             Close
           </button>
-          <button className="text-[#1B6AB4] border h-fit border-[#1B6AB4] rounded-full  px-5 py-1 ">
+          <button
+            className="text-[#1B6AB4] border h-fit border-[#1B6AB4] rounded-full  px-5 py-1 "
+            onClick={() => statusHanlder("Cancel")}
+          >
             Cancel
           </button>
         </div>

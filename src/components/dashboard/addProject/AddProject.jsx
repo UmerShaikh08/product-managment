@@ -53,6 +53,7 @@ const AddProject = () => {
       console.log(result);
       dispatch(addProject(result?.data?.project));
       reset();
+      navigate("/dashboard/project-list");
     }
   };
 

@@ -94,7 +94,7 @@ const DashboardDetails = () => {
 
   return (
     <>
-      <div className=" w-[98%] h-full space-y-20 mb-[100px] lg:mb-[10px]">
+      <div className=" w-[90%] h-full space-y-20 mb-[100px] lg:mb-[10px]">
         <div className="relative w-full h-full">
           <img src={bgImg} className="w-full h-full" />
           <h3 className="absolute top-1 left-2 md:top-[20%] md:left-[2%] text-xl md:-2xl font-semibold text-white">
