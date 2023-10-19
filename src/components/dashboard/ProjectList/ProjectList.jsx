@@ -156,7 +156,7 @@ const ProjectList = () => {
         </div>
       </div>
       <div className="lg:absolute lg:top-[70%] lg:left-[3%] space-y-4 lg:right-auto lg:bg-white w-[95%] rounded-md mt-[500px] overflow-hidden  py-5">
-        <div className=" relative flex flex-row justify-between pl-2">
+        <div className=" relative flex flex-row justify-between px-2">
           <input
             value={searchKey}
             onChange={(e) => setSearchKey(e.target.value)}
