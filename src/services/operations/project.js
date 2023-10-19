@@ -2,13 +2,19 @@ import toast from "react-hot-toast";
 import apiConnector from "../apiConnector";
 import { project } from "../apis";
 import { addProject, setProjectList } from "../../redux/slices/projectSlice";
+import {
+  setCloseDeptWise,
+  setProjecCounters,
+  setTotalDeptWise,
+} from "../../redux/slices/dashboardSlice";
 
-export const createProject = async (data, token) => {
+export const createProject = async (data, token, setLoading) => {
   try {
+    setLoading(true);
     const response = await apiConnector("POST", project.CREATE_PROJECT, data, {
       Authorization: `Bearer ${token}`,
     });
-
+    setLoading(false);
     console.log("create project response --->", response);
 
     if (!response?.data?.success) {
@@ -19,6 +25,7 @@ export const createProject = async (data, token) => {
     toast.success("Successfully Create");
     return response;
   } catch (error) {
+    setLoading(false);
     toast.error("Failed to create project");
     console.log("create project error-->", error);
   }
@@ -47,24 +54,56 @@ export const fetchProjectList = async (dispatch, token) => {
   }
 };
 
-export const updateStatus = (data, token, projectList, dispatch) => {
-  return async (dispatch) => {
-    try {
-      const response = await apiConnector("POST", project.UPDATE_STATUS, data, {
-        Authorization: `Bearer ${token}`,
-      });
+export const updateStatus = async (data, token, projectList, setLoading) => {
+  try {
+    setLoading(true);
+    const response = await apiConnector("POST", project.UPDATE_STATUS, data, {
+      Authorization: `Bearer ${token}`,
+    });
 
-      console.log("Update status response --->", response);
-      if (!response?.data?.success) {
-        throw new Error("failed to update status");
-      }
-
-      // const newArr = [...projectList, response?.data?.project];
-      // dispatch(addProject(response?.data?.project));
-
-      return response?.data?.project;
-    } catch (error) {
-      console.log(error);
+    console.log("Update status response --->", response);
+    if (!response?.data?.success) {
+      throw new Error("failed to update status");
     }
-  };
+
+    setLoading(false);
+    return response?.data?.project;
+  } catch (error) {
+    setLoading(false);
+    console.log(error);
+  }
+};
+
+export const fetchDashboardDetails = async (
+  Dept,
+  token,
+  setLoading,
+  dispatch
+) => {
+  try {
+    console.log("dept", Dept);
+    setLoading(true);
+    const response = await apiConnector(
+      "POST",
+      project.DASHBOARD_DETAILS,
+      { Dept },
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
+
+    console.log("Dashboard details response --->", response);
+    if (!response?.data?.success) {
+      throw new Error("failed to fetch dashboard details");
+    }
+
+    dispatch(setProjecCounters(response?.data?.dashboard?.projectCouters));
+    dispatch(setTotalDeptWise(response?.data?.dashboard?.totalDeptWise));
+    dispatch(setCloseDeptWise(response?.data?.dashboard?.closeDeptWise));
+    setLoading(false);
+    return response?.data?.dashboard;
+  } catch (error) {
+    setLoading(false);
+    console.log(error);
+  }
 };

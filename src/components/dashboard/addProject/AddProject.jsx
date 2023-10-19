@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import bgImg from "../../../assets/Header-bg.svg";
 import logo from "../../../assets/Logo.svg";
 import { MdLogout } from "react-icons/md";
@@ -22,6 +22,7 @@ const AddProject = () => {
     formState: { errors },
   } = useForm();
   const { token } = useSelector((store) => store.auth);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -47,7 +48,7 @@ const AddProject = () => {
     }
     console.log(data);
     data.Status = "Registered";
-    const result = await createProject(data, token);
+    const result = await createProject(data, token, setLoading);
 
     if (result) {
       console.log(result);
@@ -168,6 +169,7 @@ const AddProject = () => {
 
         <button
           type="submit"
+          disabled={loading}
           className="bg-[#025AAB] text-[#E3ECF5]  rounded-full py-2  px-8  h-fit  transition-all duration-200 hover:scale-95"
         >
           {" "}

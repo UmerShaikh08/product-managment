@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { updateStatus } from "../../../services/operations/project";
 import { useDispatch, useSelector } from "react-redux";
 import { addProject } from "../../../redux/slices/projectSlice";
@@ -21,35 +21,29 @@ const ProjectRow = ({ data, setCurrentData, setAllData, idx }) => {
     End,
   } = data;
 
-  const changeDate = (date) => {
-    const inputDateStr = date;
-
-    // Create a JavaScript Date object from the input string
-    const inputDate = new Date(inputDateStr);
-
-    // Define options for formatting the date
-    const options = { year: "numeric", month: "short", day: "numeric" };
-
-    // Format the date to the desired format
-    const formattedDate = inputDate.toLocaleDateString("en-US", options);
-
-    return formattedDate;
-  };
-
+  const [loading, setLoading] = useState(false);
   const { token } = useSelector((store) => store.auth);
   const { projectList } = useSelector((store) => store.project);
   const dispatch = useDispatch();
 
+  const changeDate = (date) => {
+    const inputDateStr = date;
+    const inputDate = new Date(inputDateStr);
+    const options = { year: "numeric", month: "short", day: "numeric" };
+    const formattedDate = inputDate.toLocaleDateString("en-US", options);
+    return formattedDate;
+  };
+
   const statusHanlder = async (Status) => {
     const projectId = _id;
-    const result = await dispatch(
-      updateStatus({ projectId, Status }, token, projectList, dispatch)
+    const result = await updateStatus(
+      { projectId, Status },
+      token,
+      projectList,
+      setLoading
     );
 
     if (result) {
-      // console.log(result);
-      // setAllData((prev) => [...prev, result]);
-      // setCurrentData((prev) => [...prev, result]);
       dispatch(addProject(result));
     }
   };
@@ -60,7 +54,7 @@ const ProjectRow = ({ data, setCurrentData, setAllData, idx }) => {
         <div className="hidden lg:grid  grid-cols-13 gap-3  pl-2 ">
           <div className="col-span-2">
             <h2 className=" font-semibold">{ProjectName}</h2>
-            <p className="text-sm text-[#999999] font-serif">
+            <p className="text-xs text-[#999999]  font-semibold">
               {changeDate(Start)} to {changeDate(End)}
             </p>
           </div>
@@ -71,21 +65,30 @@ const ProjectRow = ({ data, setCurrentData, setAllData, idx }) => {
           <div className="col-span-1">{Priority}</div>
           <div className="col-span-1">{Dept}</div>
           <div className="col-span-1">{Location}</div>
-          <div className="col-span-1">{Status}</div>
+          <div className="col-span-1 font-semibold">
+            {Status === "Start"
+              ? "Running"
+              : Status === "Cancel"
+              ? "Cancelled"
+              : "Closed"}
+          </div>
           <div className="col-span-3 w-full space-x-2 flex flex-row items-center   justify-center">
             <button
+              disabled={loading}
               className="text-white rounded-full h-fit border-[#1B6AB4] px-3  bg-[#025AAB] transition-all duration-200 hover:bg-[#0259abe2]"
               onClick={() => statusHanlder("Start")}
             >
               Start
             </button>
             <button
+              disabled={loading}
               className="text-[#1B6AB4] border h-fit border-[#1B6AB4] rounded-full  px-3 transition-all duration-200 hover:bg-[#0259abe2] hover:text-white"
               onClick={() => statusHanlder("Close")}
             >
               Close
             </button>
             <button
+              disabled={loading}
               className="text-[#1B6AB4] border h-fit border-[#1B6AB4] rounded-full  px-3 transition-all duration-200 hover:bg-[#0259abe2] hover:text-white"
               onClick={() => statusHanlder("Cancel")}
             >
@@ -103,7 +106,7 @@ const ProjectRow = ({ data, setCurrentData, setAllData, idx }) => {
         <div className="flex flex-row justify-between ">
           <div className="">
             <h2 className=" font-semibold">{ProjectName}</h2>
-            <p className="text-sm text-[#999999] font-serif">
+            <p className="text-xs  text-[#999999] ">
               {Start} to {End}
             </p>
           </div>
@@ -144,18 +147,21 @@ const ProjectRow = ({ data, setCurrentData, setAllData, idx }) => {
         {/* status chaning option */}
         <div className=" w-full space-x-2  flex flex-row    justify-around">
           <button
+            disabled={loading}
             className="text-white rounded-full h-fit border-[#1B6AB4] px-5 py-1  bg-[#025AAB]"
             onClick={() => statusHanlder("Start")}
           >
             Start
           </button>
           <button
+            disabled={loading}
             className="text-[#1B6AB4] border h-fit border-[#1B6AB4] rounded-full  px-5 py-1 "
             onClick={() => statusHanlder("Close")}
           >
             Close
           </button>
           <button
+            disabled={loading}
             className="text-[#1B6AB4] border h-fit border-[#1B6AB4] rounded-full  px-5 py-1 "
             onClick={() => statusHanlder("Cancel")}
           >

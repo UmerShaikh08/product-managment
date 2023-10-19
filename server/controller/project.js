@@ -130,3 +130,66 @@ export const updateStatus = async (req, res) => {
     });
   }
 };
+
+export const dashboardDetails = async (req, res) => {
+  try {
+    const { Dept } = req.body;
+
+    if (!Dept) {
+      return res.status(200).json({
+        success: false,
+        message: "Dept not found",
+      });
+    }
+
+    const totalResponse = await Project.find({}).count();
+    const closedResponse = await Project.find({})
+      .or({ Status: "Close" })
+      .count();
+    const runningResponse = await Project.find({})
+      .or({ Status: "Start" })
+      .count();
+    const registeredResponse = await Project.find({})
+      .or({ Status: "Registered" })
+      .count();
+    const cancelledResponse = await Project.find({})
+      .or({ Status: "Cancel" })
+      .count();
+
+    let projectCouters = [
+      { text: "Total", count: totalResponse },
+      { text: "Cosed", count: closedResponse },
+      { text: "Running", count: runningResponse },
+      { text: "Clouser Delay", count: registeredResponse },
+      { text: "Cancelled", count: cancelledResponse },
+    ];
+
+    const totalDeptWise = [];
+    const closeDeptWise = [];
+    for (let i = 0; i < Dept.length; i++) {
+      const total = await Project.find({}).or({ Dept: Dept[i] }).count();
+      const close = await Project.find({})
+        .and([{ Dept: Dept[i] }, { Status: "Close" }])
+        .count();
+
+      totalDeptWise.push(total);
+      closeDeptWise.push(close);
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "successfully fetched",
+      dashboard: {
+        projectCouters,
+        totalDeptWise,
+        closeDeptWise,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      success: false,
+      message: "failed to fetch dashboard  details data",
+    });
+  }
+};

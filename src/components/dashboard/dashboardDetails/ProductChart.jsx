@@ -1,31 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import { Dept } from "../../../utils/data";
 
-const ProductChart = () => {
-  const options = {
+const ProductChart = ({ total, closed }) => {
+  function calculateDifferencePercentage(total, closed) {
+    if (total && closed) {
+      return total.map((totalValue, index) => {
+        if (totalValue === 0) {
+          return 100; // Handle the case where "Total" is 0
+        }
+        const closedValue = closed[index];
+        return (closedValue / totalValue) * 100;
+      });
+    } else {
+      return [];
+    }
+  }
+  const option = {
     chart: {
       type: "column",
     },
     title: {
-      text: "Monthly Average Rainfall",
-      className: "bg-black",
-    },
-    subtitle: {
-      text: "Source: WorldClimate.com",
-      className: "text-white ",
+      text: "Total vs Closed",
     },
     xAxis: {
-      categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"],
+      categories: Dept,
       crosshair: true,
     },
     yAxis: {
-      min: 0,
-      title: {
-        text: "Rainfall (mm)",
+      stacklabels: {
+        enabled: true,
+        allowoverlap: true,
+        rotation: 0,
+        style: {
+          fontweight: "bold",
+          fontsize: "9px",
+        },
       },
-      className: "py-8",
     },
+
     tooltip: {
       headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
       pointFormat:
@@ -42,20 +56,33 @@ const ProductChart = () => {
       },
     },
     series: [
-      {
-        name: "Tokyo",
-        data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5],
-      },
-
-      {
-        name: "Berlin",
-        data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4],
-      },
+      { name: "Total", data: total ? total : 0 },
+      { name: "Closed", data: closed ? closed : 0 },
     ],
+    stacklabels: {
+      enabled: true,
+      allowoverlap: true,
+      rotation: 0,
+      style: {
+        fontweight: "bold",
+        fontsize: "9px",
+      },
+    },
   };
+
+  const [chartOptions, setChartOptions] = useState(option);
+
+  useEffect(() => {
+    setChartOptions(option);
+  }, [total, closed]);
+
   return (
     <div className=" sm:[70%] w-full md:w-[60%] lg:w-[40%]  rounded-md overflow-hidden">
-      <HighchartsReact highcharts={Highcharts} options={options} />
+      <HighchartsReact
+        highcharts={Highcharts}
+        options={chartOptions}
+        immutable={true}
+      />
     </div>
   );
 };

@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProjectList } from "../../../services/operations/project";
 import Loader from "../../Loader";
+import DeskStopShimmer from "../../shimmer/DeskStopShimmer";
 
 const ProjectList = () => {
   const [allData, setAllData] = useState(null);
@@ -134,7 +135,7 @@ const ProjectList = () => {
     }
   };
 
-  return currentData ? (
+  return (
     <div className="relative w-full h-full space-y-4  mb-[100px]">
       <div className="relative w-full h-full">
         <img src={bgImg} className="w-full h-full" />
@@ -160,7 +161,7 @@ const ProjectList = () => {
             value={searchKey}
             onChange={(e) => setSearchKey(e.target.value)}
             placeholder="Search"
-            className="border-b-2 pl-8 text-lg border-b-[#979797]  outline-none"
+            className="border-b-2 pl-8 text-lg border-b-[#979797] bg-[#F3F5F7] lg:bg-white  outline-none"
           />
           <HiOutlineSearch
             size={20}
@@ -168,7 +169,7 @@ const ProjectList = () => {
           />
           <select
             value={sortType}
-            className=""
+            className="bg-[#F3F5F7] outline-none"
             onChange={(e) => setSortType(e.target.value)}
           >
             <option value="Priority">Priority</option>
@@ -197,21 +198,24 @@ const ProjectList = () => {
 
           {/* table body */}
           <>
-            <div className="hidden lg:block   w-[100%] mx-auto    lg:space-y-3">
-              {currentData &&
-                currentData?.length !== 0 &&
-                currentData?.slice(start, end)?.map((data, idx) => {
-                  return (
-                    <ProjectRow
-                      data={data}
-                      key={idx}
-                      setAllData={setAllData}
-                      setCurrentData={setCurrentData}
-                      idx={idx}
-                    />
-                  );
-                })}
-            </div>
+            {currentData?.length !== 0 ? (
+              <div className="hidden lg:block   w-[100%] mx-auto    lg:space-y-3">
+                {currentData?.length !== 0 &&
+                  currentData?.slice(start, end)?.map((data, idx) => {
+                    return (
+                      <ProjectRow
+                        data={data}
+                        key={idx}
+                        setAllData={setAllData}
+                        setCurrentData={setCurrentData}
+                        idx={idx}
+                      />
+                    );
+                  })}
+              </div>
+            ) : (
+              <DeskStopShimmer />
+            )}
 
             <div className=" lg:hidden grid grid-cols-4  w-[100%] mx-auto pl-2 gap-5  ">
               {currentData &&
@@ -251,8 +255,6 @@ const ProjectList = () => {
         </div>
       </div>
     </div>
-  ) : (
-    <Loader />
   );
 };
 
