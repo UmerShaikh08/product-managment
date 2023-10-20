@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Highcharts from "highcharts";
+import Highcharts, { color } from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { Dept } from "../../../utils/data";
 
@@ -8,6 +8,7 @@ const ProductChart = ({ total, closed }) => {
     chart: {
       type: "column",
     },
+
     title: {
       style: {
         color: "#1374CD",
@@ -18,6 +19,11 @@ const ProductChart = ({ total, closed }) => {
     xAxis: {
       categories: Dept,
       crosshair: true,
+      labels: {
+        style: {
+          color: "#544FC5",
+        },
+      },
     },
     yAxis: {
       stacklabels: {
@@ -29,36 +35,28 @@ const ProductChart = ({ total, closed }) => {
           fontsize: "9px",
         },
       },
+      labels: {
+        style: {
+          color: "#544FC5",
+        },
+      },
     },
 
-    tooltip: {
-      headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-      pointFormat:
-        '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-        '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-      footerFormat: "</table>",
-      shared: true,
-      useHTML: true,
-    },
     plotOptions: {
       column: {
         pointPadding: 0.2,
         borderWidth: 0,
       },
     },
-    series: [
-      { name: "Total", data: total ? total : 0 },
-      { name: "Closed", data: closed ? closed : 0 },
-    ],
-    stacklabels: {
-      enabled: true,
-      allowoverlap: true,
-      rotation: 0,
-      style: {
-        fontweight: "bold",
-        fontsize: "9px",
+    legend: {
+      itemStyle: {
+        color: "#0CC9E8",
       },
     },
+    series: [
+      { name: "Total", data: total ? total : 0, color: "#025AAB" },
+      { name: "Closed", data: closed ? closed : 0, color: "#5AA647" },
+    ],
   };
 
   const [chartOptions, setChartOptions] = useState(option);

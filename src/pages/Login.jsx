@@ -40,7 +40,7 @@ const Login = () => {
             onClick={() => {
               setShowDemo(false);
             }}
-            className="absolute top-[-30px] right-[-20px] text-5xl text-richblack-900 rounded-full w-[40px] h-[40px] flex justify-center items-center cursor-pointer"
+            className="absolute top-[-30px] right-[-20px] text-5xl text-richblack-900 rounded-full w-[40px] h-[40px] flex justify-center items-center "
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -71,7 +71,7 @@ const Login = () => {
             </div>
             <div className="bg-yellow-100 text-center font-semibold rounded-md flex flex-row  px-4 py-2 ">
               <TbCornerDownRightDouble className="text-2xl text-richblack-900 hidden md:block" />{" "}
-              Pass :- 1234
+              Pass :-1234
             </div>
           </div>
         </div>
