@@ -158,7 +158,7 @@ export const dashboardDetails = async (req, res) => {
 
     let projectCouters = [
       { text: "Total", count: totalResponse },
-      { text: "Cosed", count: closedResponse },
+      { text: "Closed", count: closedResponse },
       { text: "Running", count: runningResponse },
       { text: "Clouser Delay", count: registeredResponse },
       { text: "Cancelled", count: cancelledResponse },

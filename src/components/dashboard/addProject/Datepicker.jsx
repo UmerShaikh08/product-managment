@@ -5,9 +5,9 @@ import "react-datepicker/dist/react-datepicker.css"; // Import the styles
 import "react-datepicker/dist/react-datepicker-cssmodules.css"; // Optional CSS modules
 import { data } from "autoprefixer";
 
-const Datepicker = ({ name, register, errors, setValue }) => {
+const Datepicker = ({ name, errors, setValue }) => {
   const [selectedDate, setSelectedDate] = useState(null);
-  console.log(name);
+  // console.log(name);
   const handleDateChange = (date) => {
     setSelectedDate(date);
     setValue(name, date);

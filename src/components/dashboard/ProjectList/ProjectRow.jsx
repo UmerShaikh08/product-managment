@@ -70,7 +70,9 @@ const ProjectRow = ({ data, setCurrentData, setAllData, idx }) => {
               ? "Running"
               : Status === "Cancel"
               ? "Cancelled"
-              : "Closed"}
+              : Status === "Close"
+              ? "Closed"
+              : "Registered"}
           </div>
           <div className="col-span-3 w-full space-x-2 flex flex-row items-center   justify-center">
             <button
@@ -107,7 +109,7 @@ const ProjectRow = ({ data, setCurrentData, setAllData, idx }) => {
           <div className="">
             <h2 className=" font-semibold">{ProjectName}</h2>
             <p className="text-xs  text-[#999999] ">
-              {Start} to {End}
+              {changeDate(Start)} to {changeDate(End)}
             </p>
           </div>
           <h3>{Status}</h3>

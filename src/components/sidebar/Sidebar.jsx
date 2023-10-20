@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SideLinks from "./SideLinks";
 import dashboard from "../../assets/Dashboard.svg";
 import dashboardActive from "../../assets/Dashboard-active.svg";
@@ -17,6 +17,9 @@ const Sidebar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    setOpenLink(location.pathname);
+  }, [location.pathname]);
   return (
     <>
       {/* deskstop view */}

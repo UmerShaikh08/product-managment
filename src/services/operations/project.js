@@ -81,7 +81,6 @@ export const fetchDashboardDetails = async (
   dispatch
 ) => {
   try {
-    console.log("dept", Dept);
     setLoading(true);
     const response = await apiConnector(
       "POST",

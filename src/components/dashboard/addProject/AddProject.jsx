@@ -31,7 +31,7 @@ const AddProject = () => {
     const end = "End";
     const start = "start";
 
-    console.log(data.End);
+    // console.log(data.End);
     if (
       data.End === undefined ||
       data.End === null ||
@@ -46,12 +46,12 @@ const AddProject = () => {
       toast.error("Enter Valid Project Date");
       return;
     }
-    console.log(data);
+    // console.log(data);
     data.Status = "Registered";
     const result = await createProject(data, token, setLoading);
 
     if (result) {
-      console.log(result);
+      // console.log(result);
       dispatch(addProject(result?.data?.project));
       reset();
       navigate("/dashboard/project-list");

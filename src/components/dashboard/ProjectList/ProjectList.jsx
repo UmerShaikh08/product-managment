@@ -58,7 +58,7 @@ const ProjectList = () => {
       }
     } else {
       // for priority
-      console.log("alldata ", allData);
+      // console.log("alldata ", allData);
       if (allData) {
         const arr = [...allData].sort((a, b) => {
           const priorityOrder = { High: 1, Mid: 2, Low: 3 };

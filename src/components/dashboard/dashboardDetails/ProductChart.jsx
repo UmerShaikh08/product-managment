@@ -4,24 +4,15 @@ import HighchartsReact from "highcharts-react-official";
 import { Dept } from "../../../utils/data";
 
 const ProductChart = ({ total, closed }) => {
-  function calculateDifferencePercentage(total, closed) {
-    if (total && closed) {
-      return total.map((totalValue, index) => {
-        if (totalValue === 0) {
-          return 100; // Handle the case where "Total" is 0
-        }
-        const closedValue = closed[index];
-        return (closedValue / totalValue) * 100;
-      });
-    } else {
-      return [];
-    }
-  }
   const option = {
     chart: {
       type: "column",
     },
     title: {
+      style: {
+        color: "#1374CD",
+        font: 'bold 16px "Trebuchet MS", Verdana, sans-serif',
+      },
       text: "Total vs Closed",
     },
     xAxis: {
@@ -79,6 +70,7 @@ const ProductChart = ({ total, closed }) => {
   return (
     <div className=" sm:[70%] w-full md:w-[60%] lg:w-[40%]  rounded-md overflow-hidden">
       <HighchartsReact
+        style={true}
         highcharts={Highcharts}
         options={chartOptions}
         immutable={true}
