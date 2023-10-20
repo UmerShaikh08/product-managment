@@ -7,7 +7,7 @@ import SelectionBox from "./SelectionBox";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../../services/operations/auth";
 import { useDispatch, useSelector } from "react-redux";
-import Datepicker from "./DatePicker";
+import Datepicker from "./Datepicker";
 import { createProject } from "../../../services/operations/project";
 import toast from "react-hot-toast";
 import { addProject } from "../../../redux/slices/projectSlice";
