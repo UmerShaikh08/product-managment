@@ -14,11 +14,14 @@ const authSlice = createSlice({
       );
       state.projectList[idx] = action.payload;
     },
+    addNewProject(state, action) {
+      state.projectList.push(action.payload);
+    },
     setProjectList(state, action) {
       state.projectList = action.payload;
     },
   },
 });
 
-export const { addProject, setProjectList } = authSlice.actions;
+export const { addProject, setProjectList, addNewProject } = authSlice.actions;
 export default authSlice.reducer;

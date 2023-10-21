@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import logo from "../assets/Logo.svg";
+import { login } from "../services/operations/auth";
 import { useForm } from "react-hook-form";
 import { BsEyeSlash, BsEye } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import { login } from "../services/operations/auth";
 import { useDispatch } from "react-redux";
 import { BsLightningChargeFill } from "react-icons/bs";
 import { TbCornerDownRightDouble } from "react-icons/tb";
@@ -14,6 +14,7 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [error, setError] = useState(false);

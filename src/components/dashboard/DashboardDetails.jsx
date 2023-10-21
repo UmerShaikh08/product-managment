@@ -1,44 +1,33 @@
 import React, { useEffect, useState } from "react";
-import bgImg from "../../assets/Header-bg.svg";
 import logo from "../../assets/Logo.svg";
-import ProjectDataCard from "./dashboardDetails/ProjectDataCard";
+import bgImg from "../../assets/Header-bg.svg";
 import ProductChart from "./dashboardDetails/ProductChart";
-
+import CountersShimmer from "../shimmer/CountersShimmer";
+import ProjectDataCard from "./dashboardDetails/ProjectDataCard";
+import { Dept } from "../../utils/data";
+import { logout } from "../../services/operations/auth";
 import { MdLogout } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Keyboard, Mousewheel } from "swiper/modules";
+import { fetchDashboardDetails } from "../../services/operations/project";
+import { useDispatch, useSelector } from "react-redux";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/free-mode";
-import { useNavigate } from "react-router-dom";
-import { logout } from "../../services/operations/auth";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchDashboardDetails } from "../../services/operations/project";
-import { Dept } from "../../utils/data";
-import CountersShimmer from "../shimmer/CountersShimmer";
 
 const DashboardDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
-  const { token } = useSelector((store) => store.auth);
-  const { projectList } = useSelector((store) => store.project);
-  const { projectCounters, totalDeptWise, closeDeptWise } = useSelector(
-    (store) => store.dashboard
-  );
 
-  const [dashboardCounters, setDashboardCounters] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [dashboardCounters, setDashboardCounters] = useState([]);
   const [total, setTotal] = useState(null);
   const [closed, setClosed] = useState(null);
-  const [flag, setFlag] = useState(false);
+  const { token } = useSelector((store) => store.auth);
 
   const fetchDashboard = async () => {
-    const result = await fetchDashboardDetails(
-      Dept,
-      token,
-      setLoading,
-      dispatch
-    );
+    const result = await fetchDashboardDetails(Dept, token, setLoading);
 
     if (result) {
       setDashboardCounters(result?.projectCouters);
@@ -48,25 +37,8 @@ const DashboardDetails = () => {
   };
 
   useEffect(() => {
-    if (
-      projectCounters?.length === 0 ||
-      totalDeptWise?.length === 0 ||
-      closeDeptWise?.length === 0
-    ) {
-      console.log("yes");
-      fetchDashboard(Dept, token);
-    } else {
-      setDashboardCounters(projectCounters);
-      setTotal(totalDeptWise);
-      setClosed(closeDeptWise);
-    }
+    fetchDashboard();
   }, []);
-
-  useEffect(() => {
-    if (projectList.length > 0) {
-      fetchDashboard(Dept, token);
-    }
-  }, [projectList]);
 
   return (
     <>
@@ -90,7 +62,7 @@ const DashboardDetails = () => {
           </div>
 
           <div className=" mt-2 md:-mt-10  w-[90%] mx-auto ">
-            {projectCounters?.length !== 0 ? (
+            {dashboardCounters?.length !== 0 ? (
               <Swiper
                 mousewheel={{
                   enabled: true,
@@ -115,12 +87,11 @@ const DashboardDetails = () => {
                   "--swiper-navigation-size": "20px",
                 }}
               >
-                {dashboardCounters &&
-                  dashboardCounters.map((data, idx) => (
-                    <SwiperSlide key={idx}>
-                      <ProjectDataCard text={data.text} count={data.count} />
-                    </SwiperSlide>
-                  ))}
+                {dashboardCounters?.map((data, idx) => (
+                  <SwiperSlide key={idx}>
+                    <ProjectDataCard text={data.text} count={data.count} />
+                  </SwiperSlide>
+                ))}
               </Swiper>
             ) : (
               <div>

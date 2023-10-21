@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react";
-import bgImg from "../../../assets/Header-bg.svg";
 import logo from "../../../assets/Logo.svg";
-import { MdLogout } from "react-icons/md";
+import bgImg from "../../../assets/Header-bg.svg";
 import ProjectRow from "./ProjectRow";
-import { HiOutlineSearch } from "react-icons/hi";
-// import { projectList } from "../../../utils/data";
-import { TbMathGreater, TbMathLower } from "react-icons/tb";
-import { logout } from "../../../services/operations/auth";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchProjectList } from "../../../services/operations/project";
-import Loader from "../../Loader";
 import DeskStopShimmer from "../../shimmer/DeskStopShimmer";
+import { logout } from "../../../services/operations/auth";
+import { MdLogout } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
+import { HiOutlineSearch } from "react-icons/hi";
+import { fetchProjectList } from "../../../services/operations/project";
+import { TbMathGreater, TbMathLower } from "react-icons/tb";
+import { useDispatch, useSelector } from "react-redux";
 
 const ProjectList = () => {
   const [allData, setAllData] = useState(null);
@@ -57,8 +55,6 @@ const ProjectList = () => {
         setCurrentData(arr);
       }
     } else {
-      // for priority
-      // console.log("alldata ", allData);
       if (allData) {
         const arr = [...allData].sort((a, b) => {
           const priorityOrder = { High: 1, Mid: 2, Low: 3 };
@@ -76,7 +72,9 @@ const ProjectList = () => {
       setLoading(false);
     };
 
-    return () => fetchProjectListingData();
+    if (projectList.length === 0) {
+      fetchProjectListingData();
+    }
   }, []);
 
   useEffect(() => {

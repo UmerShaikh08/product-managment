@@ -1,12 +1,7 @@
 import toast from "react-hot-toast";
 import apiConnector from "../apiConnector";
 import { project } from "../apis";
-import { addProject, setProjectList } from "../../redux/slices/projectSlice";
-import {
-  setCloseDeptWise,
-  setProjecCounters,
-  setTotalDeptWise,
-} from "../../redux/slices/dashboardSlice";
+import { setProjectList } from "../../redux/slices/projectSlice";
 
 export const createProject = async (data, token, setLoading) => {
   try {
@@ -54,7 +49,7 @@ export const fetchProjectList = async (dispatch, token) => {
   }
 };
 
-export const updateStatus = async (data, token, projectList, setLoading) => {
+export const updateStatus = async (data, token, setLoading) => {
   try {
     setLoading(true);
     const response = await apiConnector("POST", project.UPDATE_STATUS, data, {
@@ -74,12 +69,7 @@ export const updateStatus = async (data, token, projectList, setLoading) => {
   }
 };
 
-export const fetchDashboardDetails = async (
-  Dept,
-  token,
-  setLoading,
-  dispatch
-) => {
+export const fetchDashboardDetails = async (Dept, token, setLoading) => {
   try {
     setLoading(true);
     const response = await apiConnector(
@@ -96,9 +86,6 @@ export const fetchDashboardDetails = async (
       throw new Error("failed to fetch dashboard details");
     }
 
-    dispatch(setProjecCounters(response?.data?.dashboard?.projectCouters));
-    dispatch(setTotalDeptWise(response?.data?.dashboard?.totalDeptWise));
-    dispatch(setCloseDeptWise(response?.data?.dashboard?.closeDeptWise));
     setLoading(false);
     return response?.data?.dashboard;
   } catch (error) {

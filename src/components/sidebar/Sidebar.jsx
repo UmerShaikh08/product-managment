@@ -1,25 +1,24 @@
 import React, { useEffect, useState } from "react";
 import SideLinks from "./SideLinks";
 import dashboard from "../../assets/Dashboard.svg";
-import dashboardActive from "../../assets/Dashboard-active.svg";
-import projectList from "../../assets/Project-list.svg";
-import projectListActive from "../../assets/Project-list-active.svg";
-import createProject from "../../assets/create-project.svg";
-import createProjectActive from "../../assets/create-project-active.svg";
 import logoutImg from "../../assets/Logout.svg";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import projectList from "../../assets/Project-list.svg";
+import createProject from "../../assets/create-project.svg";
+import dashboardActive from "../../assets/Dashboard-active.svg";
+import projectListActive from "../../assets/Project-list-active.svg";
+import createProjectActive from "../../assets/create-project-active.svg";
 import { logout } from "../../services/operations/auth";
+import { useDispatch } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
   const location = useLocation();
-  const [openLink, setOpenLink] = useState(location.pathname);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [openLink, setOpenLink] = useState(location.pathname);
 
   useEffect(() => {
     setOpenLink(location.pathname);
-    console.log("no");
   }, []);
   return (
     <>

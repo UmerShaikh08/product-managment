@@ -3,9 +3,7 @@ import { updateStatus } from "../../../services/operations/project";
 import { useDispatch, useSelector } from "react-redux";
 import { addProject } from "../../../redux/slices/projectSlice";
 
-const ProjectRow = ({ data, setCurrentData, setAllData, idx }) => {
-  //   console.log("inside row ", data);
-
+const ProjectRow = ({ data }) => {
   const {
     ProjectName,
     Reason,
@@ -21,10 +19,10 @@ const ProjectRow = ({ data, setCurrentData, setAllData, idx }) => {
     End,
   } = data;
 
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const { token } = useSelector((store) => store.auth);
   const { projectList } = useSelector((store) => store.project);
-  const dispatch = useDispatch();
 
   const changeDate = (date) => {
     const inputDateStr = date;
@@ -39,7 +37,7 @@ const ProjectRow = ({ data, setCurrentData, setAllData, idx }) => {
     const result = await updateStatus(
       { projectId, Status },
       token,
-      projectList,
+
       setLoading
     );
 

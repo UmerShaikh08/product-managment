@@ -1,10 +1,6 @@
 import React from "react";
-// import Sidebar from "../components/sidebar/Sidebar";
-import DashboardDetails from "../components/dashboard/DashboardDetails";
-import AddProject from "../components/dashboard/addProject/AddProject";
-import ProjectList from "../components/dashboard/ProjectList/ProjectList";
-import { Outlet } from "react-router-dom";
 import Sidebar from "../components/sidebar/Sidebar";
+import { Outlet } from "react-router-dom";
 
 const Dashboard = () => {
   return (

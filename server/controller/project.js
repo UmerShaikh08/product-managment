@@ -142,35 +142,37 @@ export const dashboardDetails = async (req, res) => {
       });
     }
 
+    // count of the project
     const totalResponse = await Project.find({}).count();
+
+    //  count of the closed projects
     const closedResponse = await Project.find({})
       .or({ Status: "Close" })
       .count();
+
+    //  count of the running projects
     const runningResponse = await Project.find({})
       .or({ Status: "Start" })
       .count();
-    const registeredResponse = await Project.find({})
-      .or({ Status: "Registered" })
-      .count();
+
+    // count of the cancelled projects
     const cancelledResponse = await Project.find({})
       .or({ Status: "Cancel" })
       .count();
 
+    //  counting the clouser Delay project
     const checkDate = (dateString) => {
       const date = new Date(dateString);
       return date;
     };
-
     const clouserDelayDbData = await Project.find({});
 
-    const clouserDelayLength = clouserDelayDbData.filter(
+    const count = clouserDelayDbData.filter(
       (project) =>
         checkDate(project?.End) < Date.now() && project?.Status === "Start"
     );
 
-    const clouserDelay = clouserDelayLength.length;
-
-    console.log(clouserDelay);
+    const clouserDelay = count.length;
 
     let projectCouters = [
       { text: "Total", count: totalResponse },
@@ -180,6 +182,7 @@ export const dashboardDetails = async (req, res) => {
       { text: "Cancelled", count: cancelledResponse },
     ];
 
+    //  counting the total and closed depend on Department
     const totalDeptWise = [];
     const closeDeptWise = [];
     for (let i = 0; i < Dept.length; i++) {

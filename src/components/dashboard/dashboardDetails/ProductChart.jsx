@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import Highcharts, { color } from "highcharts";
-import HighchartsReact from "highcharts-react-official";
 import { Dept } from "../../../utils/data";
+import Highcharts, { color } from "highcharts";
+import React, { useEffect, useState } from "react";
+import HighchartsReact from "highcharts-react-official";
 
 const ProductChart = ({ total, closed }) => {
   const option = {

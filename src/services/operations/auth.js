@@ -1,6 +1,6 @@
-import { setToken } from "../../redux/slices/authSlice";
 import apiConnector from "../apiConnector";
 import { auth } from "../apis";
+import { setToken } from "../../redux/slices/authSlice";
 
 export const login = async (data, navigate, dispatch, setLoading) => {
   try {

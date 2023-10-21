@@ -1,17 +1,17 @@
-import React, { useState } from "react";
-import bgImg from "../../../assets/Header-bg.svg";
 import logo from "../../../assets/Logo.svg";
-import { MdLogout } from "react-icons/md";
-import { useForm } from "react-hook-form";
-import SelectionBox from "./SelectionBox";
-import { useNavigate } from "react-router-dom";
-import { logout } from "../../../services/operations/auth";
-import { useDispatch, useSelector } from "react-redux";
-import Datepicker from "./Datepicker";
-import { createProject } from "../../../services/operations/project";
+import bgImg from "../../../assets/Header-bg.svg";
 import toast from "react-hot-toast";
-import { addProject } from "../../../redux/slices/projectSlice";
+import Datepicker from "./Datepicker";
+import SelectionBox from "./SelectionBox";
+import React, { useState } from "react";
+import { logout } from "../../../services/operations/auth";
+import { useForm } from "react-hook-form";
+import { MdLogout } from "react-icons/md";
 import { selectBox } from "../../../utils/SelectBoxData";
+import { addNewProject, addProject } from "../../../redux/slices/projectSlice";
+import { useNavigate } from "react-router-dom";
+import { createProject } from "../../../services/operations/project";
+import { useDispatch, useSelector } from "react-redux";
 
 const AddProject = () => {
   const {
@@ -31,7 +31,6 @@ const AddProject = () => {
     const end = "End";
     const start = "start";
 
-    // console.log(data.End);
     if (
       data.End === undefined ||
       data.End === null ||
@@ -52,7 +51,7 @@ const AddProject = () => {
 
     if (result) {
       // console.log(result);
-      dispatch(addProject(result?.data?.project));
+      dispatch(addNewProject(result?.data?.project));
       reset();
       navigate("/dashboard/project-list");
     }
