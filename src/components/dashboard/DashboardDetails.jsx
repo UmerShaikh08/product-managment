@@ -30,6 +30,7 @@ const DashboardDetails = () => {
   const [dashboardCounters, setDashboardCounters] = useState(null);
   const [total, setTotal] = useState(null);
   const [closed, setClosed] = useState(null);
+  const [flag, setFlag] = useState(false);
 
   const fetchDashboard = async () => {
     const result = await fetchDashboardDetails(
@@ -52,6 +53,7 @@ const DashboardDetails = () => {
       totalDeptWise?.length === 0 ||
       closeDeptWise?.length === 0
     ) {
+      console.log("yes");
       fetchDashboard(Dept, token);
     } else {
       setDashboardCounters(projectCounters);
@@ -61,7 +63,9 @@ const DashboardDetails = () => {
   }, []);
 
   useEffect(() => {
-    fetchDashboard();
+    if (projectList.length > 0) {
+      fetchDashboard(Dept, token);
+    }
   }, [projectList]);
 
   return (

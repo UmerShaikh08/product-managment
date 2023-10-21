@@ -156,11 +156,27 @@ export const dashboardDetails = async (req, res) => {
       .or({ Status: "Cancel" })
       .count();
 
+    const checkDate = (dateString) => {
+      const date = new Date(dateString);
+      return date;
+    };
+
+    const clouserDelayDbData = await Project.find({});
+
+    const clouserDelayLength = clouserDelayDbData.filter(
+      (project) =>
+        checkDate(project?.End) < Date.now() && project?.Status === "Start"
+    );
+
+    const clouserDelay = clouserDelayLength.length;
+
+    console.log(clouserDelay);
+
     let projectCouters = [
       { text: "Total", count: totalResponse },
       { text: "Closed", count: closedResponse },
       { text: "Running", count: runningResponse },
-      { text: "Clouser Delay", count: registeredResponse },
+      { text: "Clouser Delay", count: clouserDelay },
       { text: "Cancelled", count: cancelledResponse },
     ];
 
@@ -183,6 +199,7 @@ export const dashboardDetails = async (req, res) => {
         projectCouters,
         totalDeptWise,
         closeDeptWise,
+        clouserDelay,
       },
     });
   } catch (error) {

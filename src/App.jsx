@@ -12,8 +12,6 @@ import OpenRoute from "./components/auth/OpenRoute";
 import PrivateRoute from "./components/auth/PrivateRoute";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <div className="h-full w-full">
       <Routes>

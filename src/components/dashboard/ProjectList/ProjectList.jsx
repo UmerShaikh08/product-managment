@@ -18,7 +18,7 @@ const ProjectList = () => {
   const [currentData, setCurrentData] = useState(null);
   const [searchKey, setSearchKey] = useState("");
   const [sortType, setSortType] = useState("Priority");
-
+  const [loading, setLoading] = useState(false);
   const [currentPage, setCurrenPage] = useState(1);
   const [start, setStart] = useState(0);
   const [end, setEnd] = useState(5);
@@ -71,14 +71,12 @@ const ProjectList = () => {
 
   useEffect(() => {
     const fetchProjectListingData = async () => {
+      setLoading(true);
       const result = await fetchProjectList(dispatch, token);
-
-      // if (result) {
-      //   setAllData(result);
-      //   setCurrentData(result);
-      // }
+      setLoading(false);
     };
-    fetchProjectListingData();
+
+    return () => fetchProjectListingData();
   }, []);
 
   useEffect(() => {
