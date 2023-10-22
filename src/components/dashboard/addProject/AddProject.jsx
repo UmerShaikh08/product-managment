@@ -8,8 +8,8 @@ import { logout } from "../../../services/operations/auth";
 import { useForm } from "react-hook-form";
 import { MdLogout } from "react-icons/md";
 import { selectBox } from "../../../utils/SelectBoxData";
-import { addNewProject, addProject } from "../../../redux/slices/projectSlice";
 import { useNavigate } from "react-router-dom";
+import { addNewProject } from "../../../redux/slices/projectSlice";
 import { createProject } from "../../../services/operations/project";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -28,9 +28,6 @@ const AddProject = () => {
   const dispatch = useDispatch();
 
   const submitData = async (data) => {
-    const end = "End";
-    const start = "start";
-
     if (
       data.End === undefined ||
       data.End === null ||

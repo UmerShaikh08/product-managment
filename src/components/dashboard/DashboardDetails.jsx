@@ -20,10 +20,11 @@ const DashboardDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [loading, setLoading] = useState(false);
-  const [dashboardCounters, setDashboardCounters] = useState([]);
   const [total, setTotal] = useState(null);
   const [closed, setClosed] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [dashboardCounters, setDashboardCounters] = useState([]);
+
   const { token } = useSelector((store) => store.auth);
 
   const fetchDashboard = async () => {
@@ -64,6 +65,8 @@ const DashboardDetails = () => {
           <div className=" mt-2 md:-mt-10  w-[90%] mx-auto ">
             {dashboardCounters?.length !== 0 ? (
               <Swiper
+                allowSlidePrev={true}
+                slidesPerView={1.1}
                 mousewheel={{
                   enabled: true,
                   forceToAxis: true,
@@ -72,8 +75,6 @@ const DashboardDetails = () => {
                   enabled: true,
                   onlyInViewport: true,
                 }}
-                allowSlidePrev={true}
-                slidesPerView={1.1}
                 breakpoints={{
                   300: { slidesPerView: 3, spaceBetween: 20 },
                   640: { slidesPerView: 3 },

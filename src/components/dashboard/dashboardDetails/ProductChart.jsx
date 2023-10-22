@@ -1,7 +1,7 @@
+import HighchartsReact from "highcharts-react-official";
 import { Dept } from "../../../utils/data";
 import Highcharts, { color } from "highcharts";
 import React, { useEffect, useState } from "react";
-import HighchartsReact from "highcharts-react-official";
 
 const ProductChart = ({ total, closed }) => {
   const option = {
@@ -57,6 +57,9 @@ const ProductChart = ({ total, closed }) => {
       { name: "Total", data: total ? total : 0, color: "#025AAB" },
       { name: "Closed", data: closed ? closed : 0, color: "#5AA647" },
     ],
+    accessibility: {
+      enabled: false,
+    },
   };
 
   const [chartOptions, setChartOptions] = useState(option);

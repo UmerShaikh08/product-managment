@@ -19,7 +19,7 @@ const Sidebar = () => {
 
   useEffect(() => {
     setOpenLink(location.pathname);
-  }, []);
+  }, [location.pathname]);
   return (
     <>
       {/* deskstop view */}

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { updateStatus } from "../../../services/operations/project";
-import { useDispatch, useSelector } from "react-redux";
 import { addProject } from "../../../redux/slices/projectSlice";
+import { updateStatus } from "../../../services/operations/project";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const ProjectRow = ({ data }) => {
   const {

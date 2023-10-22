@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 
 const connectDB = async () => {
   dotenv.config({ path: ".env" });

@@ -1,5 +1,5 @@
-import dotenv from "dotenv";
 import Jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 
 export const auth = async (req, res, next) => {
   try {
@@ -22,7 +22,7 @@ export const auth = async (req, res, next) => {
       });
     }
 
-    // extract payload data from token like account type
+    // extract payload data from token like user email
     const decode = await Jwt.verify(token, "UMER78");
     console.log("decode --> ", decode);
     req.user = decode;
