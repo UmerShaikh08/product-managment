@@ -65,10 +65,10 @@ const Login = () => {
               Take a Demo &nbsp; <BsLightningChargeFill size={20} />
             </p>
             <div>
-              <button className="bg-yellow-100 font-semibold mt-4 mb-1 text-richblack-900 px-4 py-2 rounded-md flex">
+              <div className="bg-yellow-100 font-semibold mt-4 mb-1 text-richblack-900 px-4 py-2 rounded-md flex ">
                 <TbCornerDownRightDouble className="text-2xl text-richblack-900 hidden md:block" />
                 Email :- umershaikh880@gmail.com
-              </button>
+              </div>
             </div>
             <div className="bg-yellow-100 text-center font-semibold rounded-md flex flex-row  px-4 py-2 ">
               <TbCornerDownRightDouble className="text-2xl text-richblack-900 hidden md:block" />{" "}
